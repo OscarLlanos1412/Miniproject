@@ -60,7 +60,7 @@ namespace Miniproyecto.Modelo
                 else if(aceptar == "Cancelar" || aceptar == "cancelar" || aceptar == "CANCELAR")
                 {
                     Console.Clear();
-                    Console.WriteLine("Usted cancelo la insercion");
+                    Console.WriteLine("Usted cancelo la inserción");
                     InicioController usuario = new InicioController();
                     return false;
                     

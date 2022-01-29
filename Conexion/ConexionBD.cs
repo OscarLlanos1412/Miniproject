@@ -88,8 +88,7 @@ namespace Miniproyecto.Conexion
             {
                 comd = new SqlCommand(sql, conn);
                 conn.Open();
-                int i = comd.ExecuteNonQuery();
-                if (i > 0)
+                if (comd.ExecuteNonQuery() > 0)
                 {
                     return false;
                 }
