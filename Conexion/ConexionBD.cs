@@ -38,8 +38,7 @@ namespace Miniproyecto.Conexion
             {
                 comd = new SqlCommand(sql, conn);
                 conn.Open();
-                int i = comd.ExecuteNonQuery();
-                if (i > 0)
+                if (comd.ExecuteNonQuery() > 0)
                 {
                     return true;
                 }
@@ -114,8 +113,7 @@ namespace Miniproyecto.Conexion
             {
                 comd = new SqlCommand(sql, conn);
                 conn.Open();
-                int i = comd.ExecuteNonQuery();
-                if (i > 0)
+                if (comd.ExecuteNonQuery() > 0)
                 {
                     
                     return false;
@@ -142,8 +140,7 @@ namespace Miniproyecto.Conexion
             {
                 comd = new SqlCommand(conActualizar, conn);
                 conn.Open();
-                int i = comd.ExecuteNonQuery();
-                if (i > 0)
+                if (comd.ExecuteNonQuery() > 0)
                 {
                     return true;
                 }
@@ -169,8 +166,7 @@ namespace Miniproyecto.Conexion
             {
                 comd = new SqlCommand(conEliminar, conn);
                 conn.Open();
-                int i = comd.ExecuteNonQuery();
-                if (i > 0)
+                if (comd.ExecuteNonQuery() > 0)
                 {
                     return true;
                 }

@@ -24,19 +24,5 @@ namespace Miniproyecto.Modelo
         public string Clave { get => clave; set => clave = value; }
         public int Tipo_user { get => tipo_user; set => tipo_user = value; }
 
-        public Persona()
-        {
-            
-        }
-        public Persona(int docu, string nombre, string apellido, string correo, string clave, int tipo_user)
-        {
-            this.Docu = docu;
-            this.Nombre = nombre;
-            this.Apellido = apellido;
-            this.Correo = correo;
-            this.Clave = clave;
-            this.Tipo_user = tipo_user;
-        }
-
     }
 }

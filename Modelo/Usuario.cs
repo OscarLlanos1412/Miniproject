@@ -16,7 +16,7 @@ namespace Miniproyecto.Modelo
         ConexionBD conn = new ConexionBD();
 
         //Metodo para agregar usuarios nuevos
-        public bool UsuariosNuevos()
+        public void UsuariosNuevos()
         {
             //Manejo de excepciones 
             try
@@ -34,45 +34,8 @@ namespace Miniproyecto.Modelo
                 Clave = Console.ReadLine();
                 Tipo_user = 2;
 
-                //Confirmación de guardado
-                Console.Write("Desea guardarlo? (Aceptar - Cancelar) : ");
-                string aceptar = Console.ReadLine();
-                if (aceptar == "Aceptar" || aceptar == "aceptar" || aceptar == "ACEPTAR")
-                {
-                    //Consulta para insertar en la Base de datos
-                    string consulGuar = "INSERT INTO persona VALUES('" + Docu + "', '" + Nombre + "', '" + Apellido + "', '" + Correo + "', '" + Clave + "', '" + Tipo_user + "')";
-                    //Comprobar si la consulta se ejecuto de la mejor manera
-                    if (conn.guardarSQL(consulGuar))
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Guardado con exito");
-                        InicioController usuario = new InicioController();
-                        return true;
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine("No guardo");
-                        InicioController usuario = new InicioController();
-                        return false;
-                    }
-                }
-                else if(aceptar == "Cancelar" || aceptar == "cancelar" || aceptar == "CANCELAR")
-                {
-                    Console.Clear();
-                    Console.WriteLine("Usted cancelo la inserción");
-                    InicioController usuario = new InicioController();
-                    return false;
-                    
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("Digite opciones correctas, por favor");
-                    InicioController usuario = new InicioController();
-                    return false;
-                }
-
+                Consultas inserUsers = new Consultas();
+                inserUsers.InsertarUsers("persona", Docu, Nombre, Apellido, Correo, Clave, Tipo_user);
 
             }
             //Obtencion de excepcion 
@@ -81,16 +44,12 @@ namespace Miniproyecto.Modelo
                 Console.Clear();
                 Console.WriteLine("No puede ir vacios los campos y tiene que ser letras o numeros, dependiendo el campo requerido");
                 InicioController usuario = new InicioController();
-                return false;
             }
             catch (SqlException)
             {
                 Console.WriteLine("Documento ya existe, ingrese otro por favor");
                 InicioController usuario = new InicioController();
-                return false;
             }
-
-
         }
 
         //Metodo de opciones para usuarios
@@ -175,25 +134,8 @@ namespace Miniproyecto.Modelo
                     Correo = Console.ReadLine();
 
                     //Confirmación para actualizar 
-                    Console.Write("Desea actualizar (Actualizar - Cancelar)? : ");
-                    string actual = Console.ReadLine();
-                    if (actual == "Actualizar" || actual == "ACTUALIZAR" || actual == "actualizar")
-                    {
-                        //Consulta para actualizar los datos
-                        string conActual = "UPDATE persona SET nombre = '" + Nombre + "', apellido = '" + Apellido + "', correo = '" + Correo + "' WHERE documento = '" + docu + "'";
-                        if (conn.ActualizarSql(conActual))
-                        {
-                            Console.WriteLine("Actualizo con exito su información ");
-                        }
-                        else
-                        {
-                            Console.WriteLine("No actualizo con exito");
-                        }
-                    }
-                    else if (actual == "Cancelar" || actual == "CANCELAR" || actual == "cancelar")
-                    {
-                        Console.WriteLine("Cancelo la actualización");
-                    }
+                    Consultas UpdateUser = new Consultas();
+                    UpdateUser.UpdateUsers(docu, Nombre, Apellido, Correo);
                     break;
 
                 case 2:
@@ -202,83 +144,25 @@ namespace Miniproyecto.Modelo
                     Clave = Console.ReadLine();
 
                     //Confirmar actualización de la clave
-                    Console.Write("Desea actualizar (Actualizar - Cancelar)? : ");
-                    actual = Console.ReadLine();
-                    if (actual == "Actualizar" || actual == "ACTUALIZAR" || actual == "actualizar")
-                    {
-                        //Consulta para actualizar la clave
-                        string conActual = "UPDATE persona SET clave = '" + Clave + "' WHERE documento = '" + docu + "'";
-                        if (conn.ActualizarSql(conActual))
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Actualizo con exito su clave, vuelva a logearse");
-                            InicioController usuario = new InicioController();
-                        }
-                        else
-                        {
-                            Console.WriteLine("No actualizo con exito la clave");
-                        }
-                    }
-                    else if (actual == "Cancelar" || actual == "CANCELAR" || actual == "cancelar")
-                    {
-                        Console.WriteLine("Cancelo la actualización");
-                    }
+                    Consultas UpdaUsersPass = new Consultas();
+                    UpdaUsersPass.UpdateUsers(docu, "", "", "", Clave);
                     break;
 
                 case 3:
                     //Insertar preguntas 
                     Console.Write("Digita la pregunta que desea hacer: ");
                     string pregunta = Console.ReadLine();
-
+                    Consultas InserQuestion = new Consultas();
+                    InserQuestion.InsertarUsers("preguntas", docu, "", "", "", "", 0, pregunta);
                     //Consulta para insertar la pregunta
-                    string consuPregunta = "INSERT INTO preguntas VALUES('"+ docu +"', '"+ pregunta +"')";
-                    if (conn.guardarSQL(consuPregunta))
-                    {
-                        Console.WriteLine("Su pregunta se guardo exitosamente!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("No se guardo la pregunta");
-                    }
+                    
                     break;
 
                 case 4:
                     //Mostrar las preguntas que ha guardado
                     //Consulta para seleccionar todas las preguntas con el documento logeado
-                    string consuPreguntas = $"SELECT pregunta FROM preguntas WHERE documento = {docu}";
-                    if (conn.verPreguntas(consuPreguntas))
-                    {
-                        //Atrapar execepciones
-                        try
-                        {
-                            //Validar si hay preguntas relacionadas con ese documento
-                            DataRowCollection vble = conn.mostrarDatos(consuPreguntas).Rows;
-                            //Si es 0 no hay preguntas
-                            if (vble.Count == 0)
-                            {
-                                Console.WriteLine("No hay preguntas relacionadas... Agrega preguntas!");
-                                return;
-                            }
-
-                            //Mostrar las preguntas si hay preguntas con el documento logeado
-                            foreach (DataRow item in vble)
-                            {
-                                Console.WriteLine("Las preguntas que usted a guardado son: ");
-                                Console.WriteLine($"Pregunta : {item["pregunta"].ToString()}");
-                            }
-                        }
-                        //Atapar las excepciones
-                        catch (IndexOutOfRangeException e)
-                        {
-                            Console.WriteLine("No hay preguntas vinculadas con tu documento");
-                        }
-
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("No ejecuto la consulta");
-                    }                   
+                    Consultas Questions = new Consultas();
+                    Questions.SeleccionInner("preguntas", "", 0, docu);
                     break;
             }
         }
