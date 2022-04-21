@@ -90,10 +90,9 @@ namespace Miniproyecto.Modelo
                 }
 
             }
-            //Atrapar la excepcion
-            catch(FormatException e)
+            catch(Exception)
             {
-                Console.Write("No pueden ir valores vacios");
+                Console.WriteLine("No pueden ir valores vacios.".ToUpper());
                 Console.WriteLine("Que opciones desea realizar:\n 1. Actualizar Datos personales\n 2. Actualizar Clave\n 3. Agregar preguntas\n 4. Mostrar preguntas\n 5. Cerrar Sesion");
                 int opcionesActualizar = Convert.ToInt32(Console.ReadLine());
                 OpcionAccion(opcionesActualizar, docu);
@@ -102,19 +101,14 @@ namespace Miniproyecto.Modelo
                     Console.WriteLine("Que opciones desea realizar:\n 1. Actualizar Datos personales\n 2. Actualizar Clave\n 3. Agregar preguntas\n 4. Mostrar preguntas\n 5. Cerrar Sesion");
                     opcionesActualizar = Convert.ToInt32(Console.ReadLine());
                     OpcionAccion(opcionesActualizar, docu);
-                    if (opcionesActualizar == 5)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Sesion cerrada");
-                        InicioController usuario = new InicioController();
-                        break;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    
                 }
-
+                if (opcionesActualizar == 5)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Sesion cerrada");
+                    InicioController usuario = new InicioController();
+                }
             }
         }
 

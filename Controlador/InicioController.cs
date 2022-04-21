@@ -56,12 +56,16 @@ namespace Miniproyecto.Controlador
                         if (Convert.ToInt32(item["id_tip_user"].ToString()) == 1)
                         {
                             Console.WriteLine("Bienvenido Administrador " + item["nombre"].ToString().ToUpper() + " " + item["apellido"].ToString().ToUpper());
+                            DateTime initLogin = DateTime.Now;
+                            Console.WriteLine("Ingreso a la app: " + initLogin);
                             Administrador admin = new Administrador();
                             admin.Acciones(Convert.ToInt32(item["documento"].ToString()));
                         }
                         else if (Convert.ToInt32(item["id_tip_user"].ToString()) == 2)
                         {
                             Console.WriteLine("Bienvenido Usuario " + item["nombre"].ToString().ToUpper() + " " + item["apellido"].ToString().ToUpper());
+                            DateTime initLogin = DateTime.Now;
+                            Console.WriteLine("Ingreso a la app: " + initLogin);
                             Usuario user = new Usuario();
                             string doc = item["documento"].ToString();
                             int docu2 = Convert.ToInt32(doc);
