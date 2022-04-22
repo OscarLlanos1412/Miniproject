@@ -14,7 +14,7 @@ namespace Miniproyecto.Conexion
         private string CadenaConex = @"Data Source=DESKTOP-6ABCUND\OSCAR;Initial Catalog=inicio_sesion;User ID=sa; password= oscar1005753852; Integrated Security=True";
         private SqlConnection conn;
         private SqlCommand comd; //Representa un procesamiento almacenado o una instruccion sql y devuelve una respuesta
-
+        
         //Listar tablas
         private SqlDataAdapter sda;
         private DataTable dtt;
@@ -32,6 +32,34 @@ namespace Miniproyecto.Conexion
         }
 
         //Inserta datos
+        public bool encontrar(string corr, string clavs)
+        {
+            try
+            {
+                conn.Open();
+                string conss = "SELECT COUNT(*) FROM persona WHERE correo = @correo AND clave = @clave";
+                comd = new SqlCommand(conss, conn);
+                comd.Parameters.AddWithValue("@correo", corr);
+                comd.Parameters.AddWithValue("@clave", clavs);
+                int exist = Convert.ToInt32(comd.ExecuteScalar());
+                if (exist == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
         public bool guardarSQL(string sql)
         {
             try
